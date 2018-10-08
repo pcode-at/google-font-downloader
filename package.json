@@ -1,0 +1,29 @@
+{
+  "name": "google-font-downloader",
+  "version": "1.0.0",
+  "description": "Composer package google-font-downloader",
+  "main": "index.js",
+  "scripts": {
+    "setup": "composer create-project buonzz/composer-library-template google-font-downloader",
+    "docker-start": "cd docker-symfony && docker-compose up -d",
+    "docker-stop": "cd docker-symfony && docker stop $(docker ps -a -q)",
+    "docker-build": "cd docker-symfony && docker-compose build",
+    "docker-build-r": "npm run docker-build && npm run docker-restart",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pcode-at/google-font-downloader.git"
+  },
+  "keywords": [
+    "symfony",
+    "composer",
+    "php"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pcode-at/google-font-downloader/issues"
+  },
+  "homepage": "https://github.com/pcode-at/google-font-downloader#readme"
+}

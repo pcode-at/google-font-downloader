@@ -1,0 +1,24 @@
+{
+    "name": "pcode/google-font-downloader",
+    "description": "Composer package google-font-downloader",
+    "keywords": ["symfony", "composer", "php"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "PCode",
+            "email": "office@pcode.at"
+        }
+    ],
+    "type": "composer-plugin",
+    "require": {
+		"php": ">=7.1"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "pcode\\Template\\": "src/"
+        }
+    }
+}
