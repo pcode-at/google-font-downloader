@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "setup": "composer create-project buonzz/composer-library-template google-font-downloader",
+    "composer-install": "composer install",
     "docker-start": "cd docker-symfony && docker-compose up -d",
     "docker-stop": "cd docker-symfony && docker stop $(docker ps -a -q)",
     "docker-build": "cd docker-symfony && docker-compose build",
     "docker-build-r": "npm run docker-build && npm run docker-restart",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-unit": "vendor/bin/phpunit"
   },
   "repository": {
     "type": "git",

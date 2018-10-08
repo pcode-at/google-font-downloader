@@ -1,4 +1,4 @@
-<?php namespace Buonzz\Template;
+<?php namespace PCode\GoogleFontDownloader;
 
 /**
 *  A sample class
