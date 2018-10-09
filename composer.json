@@ -23,15 +23,6 @@
         "oneup/flysystem-bundle": "2.0.1",
         "php-http/guzzle6-adapter": "^1.1"
     },
-    "repositories": {
-        "dev-package": {
-            "type": "path",
-            "url": "https://github.com/pcode-at/google-font-downloader.git",
-            "options": {
-                "symlink": true
-            }
-        }
-    },
     "autoload": {
         "psr-4": {
             "PCode\\GoogleFontDownloader\\": "src/"
