@@ -1,9 +1,0 @@
-{
-  "packages": {
-    "pcode/google-font-downloader": {
-      "dev-master": { @composer.json },
-      "0.0.1": { @composer.json },
-      "1.0.0": { @composer.json }
-    }
-  }
-}
