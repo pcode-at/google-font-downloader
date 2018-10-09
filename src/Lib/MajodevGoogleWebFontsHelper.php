@@ -35,11 +35,10 @@ class MajodevGoogleWebFontsHelper implements DownloadFontInterface
      * @param ClientInterface $client
      * @param FilesystemInterface $filesystem
      * @param string $localFontFilePath
-     * @param null|string $errorMsg
      */
-    public function __construct(ClientInterface $client, FilesystemInterface $filesystem, string $localFontFilePath, ?string $errorMsg)
+    public function __construct(ClientInterface $client, FilesystemInterface $filesystem, string $localFontFilePath)
     {
-        $this->fontService = new FontService($client, $filesystem, $localFontFilePath, $errorMsg);
+        $this->fontService = new FontService($client, $filesystem, $localFontFilePath);
     }
 
     /**

@@ -38,24 +38,18 @@ class FontService implements FontServiceInterface
      * @var string
      */
     private $localFontFilePath;
-    /**
-     * @var null|string
-     */
-    private $errorMsg;
 
     /**
      * FontService constructor.
      * @param ClientInterface $client
      * @param FilesystemInterface $filesystem
      * @param string $localFontFilePath
-     * @param null|string $errorMsg
      */
-    public function __construct(ClientInterface $client, FilesystemInterface $filesystem, string $localFontFilePath, ?string $errorMsg)
+    public function __construct(ClientInterface $client, FilesystemInterface $filesystem, string $localFontFilePath)
     {
         $this->filesystem = $filesystem;
         $this->localFontFilePath = $localFontFilePath;
         $this->client = $client;
-        $this->errorMsg = $errorMsg;
     }
 
     /**
