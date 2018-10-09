@@ -1,6 +1,4 @@
 .idea
-
+app
 vendor
 web
-docker
-tests
