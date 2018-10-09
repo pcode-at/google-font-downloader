@@ -1,15 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: panev
- * Date: 10/8/18
- * Time: 10:49 AM
- */
 
-namespace PCode\GoogleFontDownloader;
+namespace PCode\GoogleFontDownloader\Lib\Models;
 
-
-class FontDTO
+final class FontDTO
 {
     /**
      * @var null|string id

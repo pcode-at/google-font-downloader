@@ -1,15 +1,26 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: panev
- * Date: 10/8/18
- * Time: 10:48 AM
- */
 
-namespace PCode\GoogleFontDownloader\Interfaces;
+namespace PCode\GoogleFontDownloader\interfaces;
 
+
+use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
 
 interface DownloadFontInterface
 {
+    /**
+     * @param array $fonts
+     */
+    public function download(Array $fonts);
 
+    /**
+     * @param string $url
+     * @return mixed
+     */
+    public function getMetadata(string $url);
+
+    /**
+     * @param $font
+     * @return FontDTO
+     */
+    public function getFontDTO($font);
 }
