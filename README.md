@@ -1,5 +1,3 @@
-# Composer package
-
 # Google font downloader
 
 ## Description
