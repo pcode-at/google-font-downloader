@@ -35,3 +35,8 @@ $filesystemAdapter = new League\Flysystem\Adapter\Local('web/fonts');
 $filesystem = new League\Flysystem\Filesystem($filesystemAdapter);
 $service = new PCode\GoogleFontDownloader\Lib\MajodevGoogleWebFontsHelper($client, $filesystem, 'fonts/');
 ```   
+
+## Useful git commands
+
+    # Clean repo
+    git clean -xfd
