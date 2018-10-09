@@ -5,7 +5,6 @@ namespace PCode\GoogleFontDownloader\Lib;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
 use League\Flysystem\FilesystemInterface;
 use PCode\GoogleFontDownloader\Interfaces\DownloadFontInterface;
 use PCode\GoogleFontDownloader\Interfaces\FontServiceInterface;
