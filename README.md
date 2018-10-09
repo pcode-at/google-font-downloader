@@ -31,7 +31,8 @@ in the constructor of the package class.
 $client = new GuzzleHttp\Client;
 $filesystemAdapter = new League\Flysystem\Adapter\Local('web/fonts');
 $filesystem = new League\Flysystem\Filesystem($filesystemAdapter);
-$service = new PCode\GoogleFontDownloader\Lib\MajodevGoogleWebFontsHelper($client, $filesystem, 'fonts/');
+$localFontFilePath = 'fonts/';
+$service = new PCode\GoogleFontDownloader\Lib\MajodevGoogleWebFontsHelper($client, $filesystem, $localFontFilePath);
 ```   
 
 ## Useful git commands
