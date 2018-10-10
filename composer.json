@@ -27,5 +27,8 @@
         "psr-4": {
             "PCode\\GoogleFontDownloader\\": "src/"
         }
+    },
+    "extra": {
+        "class": "PCode\\GoogleFontDownloader"
     }
 }
