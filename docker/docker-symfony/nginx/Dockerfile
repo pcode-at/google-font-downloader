@@ -15,7 +15,7 @@ RUN echo "upstream php-upstream { server phpcomp:9000; }" > /etc/nginx/conf.d/up
 
 RUN usermod -u 1000 www-data
 
-CMD ["nginxcomp"]
+CMD ["nginx"]
 
 EXPOSE 80
 EXPOSE 443

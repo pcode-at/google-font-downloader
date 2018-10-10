@@ -11,8 +11,6 @@ use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
  */
 interface DownloaderInterface
 {
-    public const MAJODEV_API = 'MajodevAPI';
-
     /**
      * @param array $fonts
      *
