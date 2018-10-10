@@ -25,7 +25,8 @@
     },
     "autoload": {
         "psr-4": {
-            "PCode\\GoogleFontDownloader\\": "src/"
+            "PCode\\GoogleFontDownloader\\": "src/",
+            "classmap": [ "src/Lib/Downloader.php"]
         }
     },
     "extra": {
