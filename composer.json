@@ -13,7 +13,6 @@
         "email": "office@pcode.at",
         "irc": "irc://irc.pcode.at/composer"
     },
-    "type": "composer-plugin",
     "require": {
         "ext-json": "*"
     },
@@ -24,11 +23,7 @@
         "php-http/guzzle6-adapter": "^1.1"
     },
     "autoload": {
-        "psr-4": {
-            "PCode\\GoogleFontDownloader\\": "src/"
-        }
-    },
-    "extra": {
-        "class": "PCode\\GoogleFontDownloader\\Lib\\Downloader"
+        "psr-4": { "PCode\\GoogleFontDownloader\\": "src/" },
+        "classmap": [ "src/Lib/Downloader.php"]
     }
 }

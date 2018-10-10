@@ -59,3 +59,8 @@ $apiName = DownloaderInterface::MAJODEV_API;
 # for now only availabe is MajodevAPI 
 $downloader = new PCode\GoogleFontDownloader\Lib\Downloader($client, $filesystem, $localSrcDirectory, $apiName);
 ```   
+
+## Useful git commands
+
+    # Clean repo
+    git clean -xfd
