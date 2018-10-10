@@ -23,9 +23,7 @@
         "php-http/guzzle6-adapter": "^1.1"
     },
     "autoload": {
-        "psr-4": {
-            "PCode\\GoogleFontDownloader\\": "src/",
-            "classmap": [ "src/Lib/Downloader.php"]
-        }
+        "psr-4": { "PCode\\GoogleFontDownloader\\": "src/" },
+        "classmap": [ "Lib/Downloader.php"]
     }
 }
