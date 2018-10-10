@@ -29,6 +29,6 @@
         }
     },
     "extra": {
-        "class": "PCode\\GoogleFontDownloader"
+        "class": "PCode\\GoogleFontDownloader\\Lib\\Downloader"
     }
 }
