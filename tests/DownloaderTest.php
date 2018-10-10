@@ -2,16 +2,17 @@
 
 use PHPUnit\Framework\TestCase;
 
-class MajodevGoogleWebFontsHelperTest extends TestCase
+class DownloaderTest extends TestCase
 {
     public function testIsThereAnySyntaxError()
     {
         $client = new GuzzleHttp\Client;
         $filesystemAdapter = new League\Flysystem\Adapter\Local('web/fonts');
         $filesystem = new League\Flysystem\Filesystem($filesystemAdapter);
-        $service = new PCode\GoogleFontDownloader\Lib\MajodevGoogleWebFontsHelper($client, $filesystem, 'fonts/');
-        $this->assertTrue(is_object($service));
-        unset($service);
+
+        $downloader = new PCode\GoogleFontDownloader\Lib\Downloader($client, $filesystem, 'fonts/');
+        $this->assertTrue(is_object($downloader));
+        unset($downloader);
     }
 
     public function testDownload()
@@ -19,12 +20,13 @@ class MajodevGoogleWebFontsHelperTest extends TestCase
         $client = new GuzzleHttp\Client;
         $filesystemAdapter = new League\Flysystem\Adapter\Local('web/fonts');
         $filesystem = new League\Flysystem\Filesystem($filesystemAdapter);
-        $service = new PCode\GoogleFontDownloader\Lib\MajodevGoogleWebFontsHelper($client, $filesystem, 'fonts/');
+        $downloader = new PCode\GoogleFontDownloader\Lib\Downloader($client, $filesystem, 'fonts/');
 
-        $fontDTOS = $service->download(["Arimo"]);
-        $this->assertTrue(is_array($fontDTOS));
-        var_dump($fontDTOS);
-        unset($fontDTOS);
-        unset($service);
+        $fontsDTO = $downloader->download(["Arimo", "Open Sans"]);
+        $this->assertTrue(is_array($fontsDTO));
+        var_dump(sizeof($fontsDTO));
+
+        unset($fontsDTO);
+        unset($downloader);
     }
 }

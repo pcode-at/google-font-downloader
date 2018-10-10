@@ -3,11 +3,9 @@
 namespace PCode\GoogleFontDownloader\Lib\Service;
 
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
-use League\Flysystem\FilesystemInterface;
-use PCode\GoogleFontDownloader\Interfaces\FontServiceInterface;
+use PCode\GoogleFontDownloader\Interfaces\Service\FileServiceInterface;
+use PCode\GoogleFontDownloader\Interfaces\Service\FontServiceInterface;
 use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
 use PCode\GoogleFontDownloader\Lib\Models\FontVariantsDTO;
 
@@ -27,77 +25,24 @@ class FontService implements FontServiceInterface
     //endregion
 
     /**
-     * @var ClientInterface
-     */
-    private $client;
-    /**
-     * @var FilesystemInterface
-     */
-    private $filesystem;
-    /**
      * @var string
      */
-    private $localFontFilePath;
+    private $localSrcDirectory;
+    /**
+     * @var FileServiceInterface
+     */
+    private $fileService;
+
 
     /**
      * FontService constructor.
-     * @param ClientInterface $client
-     * @param FilesystemInterface $filesystem
-     * @param string $localFontFilePath
+     * @param FileServiceInterface $fileService
+     * @param string $localSrcDirectory
      */
-    public function __construct(ClientInterface $client, FilesystemInterface $filesystem, string $localFontFilePath)
+    public function __construct(FileServiceInterface $fileService, string $localSrcDirectory)
     {
-        $this->filesystem = $filesystem;
-        $this->localFontFilePath = $localFontFilePath;
-        $this->client = $client;
-    }
-
-    /**
-     * @param null|FontVariantsDTO $variant
-     * @throws GuzzleException
-     */
-    public function downloadFile(?FontVariantsDTO $variant): void
-    {
-        $response = $this->sendRequest($variant->getUrl(), 'GET');
-        $content = $this->getContent($response, false);
-        $this->writeFile($variant->getPath(), $content);
-    }
-
-    /**
-     * @param string $filePath
-     * @param $content
-     * @return void
-     */
-    public function writeFile(string $filePath, $content)
-    {
-        if (!$this->filesystem->has($filePath)) {
-            $this->filesystem->put($filePath, $content);
-        }
-    }
-
-    /**
-     * @param string $url
-     * @param string $method
-     * @param array $options
-     * @return mixed
-     * @throws GuzzleException
-     */
-    public function sendRequest(string $url, string $method, $options = ['verify' => false])
-    {
-        return $this->client->request($method, $url, $options);
-    }
-
-    /**
-     * @param string $id
-     * @param string $extension
-     * @param string $family
-     * @param string $version
-     * @param string $storeID
-     * @return string
-     */
-    public function getFilePath(string $id, string $extension, string $family, string $version, string $storeID)
-    {
-        return $family.'/'.$family.'-'.$version.'-'.$storeID.'-'.$id.'.'.$extension;
+        $this->fileService = $fileService;
+        $this->localSrcDirectory = $localSrcDirectory;
     }
 
     /**
@@ -106,10 +51,8 @@ class FontService implements FontServiceInterface
      */
     public function createDTO($content)
     {
-        $unicodeRanges = [];
-        $variants = $this->createVariants($content);
-        $this->setUnicodeRange($unicodeRanges, $content);
-        return FontDTO::fromAPI($content['id'], $content['family'], $content['family'], $variants, $content['subsets'], $content['version'], $unicodeRanges, $content['storeID']);
+        return FontDTO::fromAPI($content['id'], $content['family'], $content['family'], $this->createVariants($content), $content['subsets'], $content['version'],
+            $this->createUnicodeRanges($content), $content['storeID']);
     }
 
     /**
@@ -136,8 +79,8 @@ class FontService implements FontServiceInterface
             $URLAndExtensionForVariant = $this->getURLAndExtensionForVariant($variant);
             $extension = $URLAndExtensionForVariant['extension'];
             $url = $URLAndExtensionForVariant['url'];
-            $filePath = $this->getFilePath($variant['id'], $extension, $content['family'], $content['version'], $content['storeID']);
-            $localSrc = '/'.$this->localFontFilePath.$filePath;
+            $filePath = $this->fileService->getPath($variant['id'], $extension, $content['family'], $content['version'], $content['storeID']);
+            $localSrc = '/'.$this->localSrcDirectory.$filePath;
 
             $variants[] = FontVariantsDTO::fromAPI($variant['id'], $variant['fontFamily'], $variant['fontStyle'], $variant['fontWeight'], $variant['local'],
                 $url, $localSrc, $filePath, $extension
@@ -147,11 +90,10 @@ class FontService implements FontServiceInterface
     }
 
     /**
-     * @param $unicodeRanges
      * @param $content
-     * @return void
+     * @return array
      */
-    protected function setUnicodeRange($unicodeRanges, $content)
+    protected function createUnicodeRanges($content)
     {
         $unicodeRangesWithSubsetsKeys = [
             "latin" => FontService::UNICODE_RANGE_LATIN,
@@ -166,11 +108,11 @@ class FontService implements FontServiceInterface
             "telugu" => FontService::UNICODE_RANGE_TELUGU
         ];
 
-        foreach ($content['subsets'] as $subset) {
+        return array_map(function ($subset) use ($unicodeRangesWithSubsetsKeys) {
             if(!empty($unicodeRangesWithSubsetsKeys[$subset])) {
-                $unicodeRanges[] = [$subset => $unicodeRangesWithSubsetsKeys[$subset]];
+                return [$subset => $unicodeRangesWithSubsetsKeys[$subset]];
             }
-        }
+        }, $content['subsets']);
     }
 
     /**
