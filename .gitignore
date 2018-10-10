@@ -3,3 +3,5 @@
 app
 vendor
 web
+tests
+docker
