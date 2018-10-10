@@ -6,6 +6,7 @@ namespace PCode\GoogleFontDownloader\Lib;
 use PCode\GoogleFontDownloader\Interfaces\APIInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\DownloadServiceInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\FontServiceInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Class MajodevGoogleWebFontsHelperService
@@ -17,6 +18,13 @@ use PCode\GoogleFontDownloader\Interfaces\Service\FontServiceInterface;
  */
 final class MajodevAPI implements APIInterface
 {
+    public const API_URL = "google-webfonts-helper.herokuapp.com";
+    public const API_PATH = "api/fonts/";
+
+    /**
+     * @var UriInterface
+     */
+    private $apiUrl;
     /**
      * @var FontServiceInterface $fontService
      */
@@ -30,34 +38,31 @@ final class MajodevAPI implements APIInterface
      * GoogleWebFontsHelperMajodevAPIService constructor.
      * @param FontServiceInterface $fontService
      * @param DownloadServiceInterface $downloadService
+     * @param UriInterface $apiUrl
      */
-    public function __construct(FontServiceInterface $fontService, DownloadServiceInterface $downloadService)
+    public function __construct(FontServiceInterface $fontService, DownloadServiceInterface $downloadService, UriInterface $apiUrl)
     {
         $this->fontService = $fontService;
         $this->downloadService = $downloadService;
-    }
-
-    /**
-     * @param string $url
-     * @return mixed
-     */
-    public function getMetadata(string $url)
-    {
-        return $this->fontService->getContent($this->downloadService->sendRequest($url, 'GET'));
+        $this->apiUrl = $apiUrl;
     }
 
     /**
      * @param null|string $font
      * @return mixed
      */
-    public function getAPIData(?string $font)
+    public function getMetadata(?string $font)
     {
-        $urlAPIMetadata = MajodevAPI::API_URL.MajodevAPI::API_PATH.$this->normalizeName($font);
-        $metadata = $this->getMetadata($urlAPIMetadata);
+
+        /** @var UriInterface $url */
+        $url = $this->apiUrl->withScheme('https')
+                            ->withHost(MajodevAPI::API_URL)
+                            ->withPath(MajodevAPI::API_PATH . $this->normalizeName($font));
+        $metadata = $this->fontService->getContent($this->downloadService->sendRequest($url->__toString(), 'GET'));
 
         // Add subsets to the url
-        $url = $urlAPIMetadata.$this->getSubsetsUrlArguments($metadata['subsets']);
-        $content = $this->fontService->getContent($this->downloadService->sendRequest($url, 'GET'));
+        $url = $this->setSubsetsUrlArguments($url, $metadata['subsets']);
+        $content = $this->fontService->getContent($this->downloadService->sendRequest($url->__toString(), 'GET'));
 
         return $content;
     }
@@ -75,19 +80,12 @@ final class MajodevAPI implements APIInterface
     }
 
     /**
+     * @param UriInterface $url
      * @param array $subsets
-     * @return string
+     * @return UriInterface
      */
-    protected function getSubsetsUrlArguments(array $subsets)
+    protected function setSubsetsUrlArguments($url, array $subsets)
     {
-        $subsetsString = '?subsets=';
-        foreach ($subsets as $key => $subset) {
-            $subsetsString = $subsetsString.$subset;
-
-            if($key < sizeof($subsets) - 1) {
-                $subsetsString = $subsetsString.',';
-            }
-        }
-        return $subsetsString;
+        return $url->withQuery('? subsets =' . http_build_query($subsets));
     }
 }

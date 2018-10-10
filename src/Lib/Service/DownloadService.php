@@ -56,7 +56,7 @@ class DownloadService implements DownloadServiceInterface
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handleFontResponse(FontDTO $fontDTO)
+    public function handleFontResponse(FontDTO $fontDTO): void
     {
         foreach ($fontDTO->getVariants() as $variant) {
             $this->downloadFile($variant);
