@@ -13,9 +13,7 @@ interface DownloaderInterface
 {
     /**
      * @param array $fonts
-     *
      * @return FontDTO[]
-     *
      * @example download(['Arimo', 'Open Sans'])
      */
     public function download(array $fonts);
