@@ -141,7 +141,10 @@ public function __construct(DownloaderInterface $downloadFonts , [...])
 
 # Then use it like
 
-$downloadedFonts = $this->downloadFonts->download(['Arimo, Open Sans']);
+$downloadedFonts = $this->downloadFonts->download([
+    ['name' => Arimo, 'version' => 'v14'], 
+    ['name => Open Sans', 'version => 'v13]'
+]);
 
 ```
 
