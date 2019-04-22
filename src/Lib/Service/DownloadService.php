@@ -17,10 +17,12 @@ class DownloadService implements DownloadServiceInterface
      * @var ClientInterface
      */
     private $client;
+
     /**
      * @var FileServiceInterface
      */
     private $fileService;
+
     /**
      * @var FontServiceInterface
      */
@@ -32,8 +34,11 @@ class DownloadService implements DownloadServiceInterface
      * @param FileServiceInterface $fileService
      * @param FontServiceInterface $fontService
      */
-    public function __construct(ClientInterface $client, FileServiceInterface $fileService, FontServiceInterface $fontService)
-    {
+    public function __construct(
+        ClientInterface $client,
+        FileServiceInterface $fileService,
+        FontServiceInterface $fontService
+    ) {
         $this->client = $client;
         $this->fileService = $fileService;
         $this->fontService = $fontService;

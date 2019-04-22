@@ -2,7 +2,6 @@
 
 namespace PCode\GoogleFontDownloader\Interfaces\Service;
 
-
 use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
 use PCode\GoogleFontDownloader\Lib\Models\FontVariantsDTO;
 

@@ -4,6 +4,7 @@
 namespace PCode\GoogleFontDownloader\Lib;
 
 
+use PCode\GoogleFontDownloader\Exception\InvalidRequestFormat;
 use PCode\GoogleFontDownloader\Interfaces\APIInterface;
 use PCode\GoogleFontDownloader\Interfaces\DownloaderInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\DownloadServiceInterface;
@@ -37,8 +38,12 @@ class Downloader implements DownloaderInterface
      * @param DownloadServiceInterface $downloadService
      * @param APIInterface $api
      */
-    public function __construct(FileServiceInterface $fileService, FontServiceInterface $fontService, DownloadServiceInterface $downloadService, APIInterface $api)
-    {
+    public function __construct(
+        FileServiceInterface $fileService,
+        FontServiceInterface $fontService,
+        DownloadServiceInterface $downloadService,
+        APIInterface $api
+    ) {
         $this->fileService = $fileService;
         $this->fontService = $fontService;
         $this->downloadService = $downloadService;
@@ -48,24 +53,41 @@ class Downloader implements DownloaderInterface
     /**
      * @param array[string] $fonts
      * @return FontDTO[]
-     * @example download(['Arimo', 'Open Sans'])
+     * @example download([
+     *   ['name' => 'Open Sans', 'version' => 'v12'],
+     *   ['name' => 'Incosolata', 'version' => 'v13'],
+     * ])
      */
     public function download(array $fonts)
     {
-        $downloadFont = function ($font) {
-            $fontDTO = $this->getFontDTO($font);
-            return $this->downloadService->downloadFont($font, $fontDTO);
-        };
-        return array_map($downloadFont, $fonts);
+        $downloadedFonts = [];
+
+        foreach ($fonts as $font) {
+            if (array_keys($font) !== ['name', 'version']) {
+                throw new InvalidRequestFormat(
+                    "Please use following structure ['name' => 'FontName', 'version' => 'v12']"
+                );
+            }
+
+            $fontDTO = $this->getFontDTO($font['name'], $font['version']);
+            $downloadedFonts[] = $this->downloadService->downloadFont($font['name'], $fontDTO);
+        }
+
+        return $downloadedFonts;
     }
 
     /**
      * @param $font
+     * @param string $version
      * @return FontDTO
      */
-    public function getFontDTO($font)
+    public function getFontDTO($font, string $version)
     {
-        $APIData = $this->api->getMetadata($font);
-        return $this->fontService->createDTO($APIData);
+        $apiData = $this->api->getMetadata($font);
+
+        $apiData['latest_version'] = $apiData['version'];
+        $apiData['version'] = $version;
+
+        return $this->fontService->createDTO($apiData);
     }
 }

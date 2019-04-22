@@ -20,7 +20,8 @@ interface DownloaderInterface
 
     /**
      * @param $font
+     * @param string|null $version
      * @return FontDTO
      */
-    public function getFontDTO($font);
+    public function getFontDTO($font, string $version);
 }

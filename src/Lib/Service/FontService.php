@@ -28,11 +28,20 @@ class FontService implements FontServiceInterface
      * @var string
      */
     private $localSrcDirectory;
+
     /**
      * @var FileServiceInterface
      */
     private $fileService;
 
+    /**
+     * @var array
+     */
+    private $fontExtensionsToDownload = [
+        'woff2',
+        'woff',
+        'ttf',
+    ];
 
     /**
      * FontService constructor.
@@ -51,8 +60,15 @@ class FontService implements FontServiceInterface
      */
     public function createDTO($content)
     {
-        return FontDTO::fromAPI($content['id'], $content['family'], $content['family'], $this->createVariants($content), $content['subsets'], $content['version'],
-            $this->createUnicodeRanges($content), $content['storeID']);
+        return FontDTO::fromAPI(
+            $content['id'],
+            $content['family'],
+            $content['family'],
+            $this->createVariants($content),
+            $content['subsets'],
+            $content['version'],
+            $this->createUnicodeRanges($content), $content['storeID']
+        );
     }
 
     /**
@@ -74,19 +90,33 @@ class FontService implements FontServiceInterface
      */
     protected function createVariants($content)
     {
-        $variants = [];
-        foreach ($content['variants'] as $variant) {
+        return array_map(function ($variant) use ($content) {
             $URLAndExtensionForVariant = $this->getURLAndExtensionForVariant($variant);
             $extension = $URLAndExtensionForVariant['extension'];
             $url = $URLAndExtensionForVariant['url'];
-            $filePath = $this->fileService->getPath($variant['id'], $extension, $content['family'], $content['version'], $content['storeID']);
+
+            $filePath = $this->fileService->getPath(
+                $variant['id'],
+                $extension,
+                $content['family'],
+                $content['version'],
+                $content['storeID']
+            );
+
             $localSrc = '/'.$this->localSrcDirectory.$filePath;
 
-            $variants[] = FontVariantsDTO::fromAPI($variant['id'], $variant['fontFamily'], $variant['fontStyle'], $variant['fontWeight'], $variant['local'],
-                $url, $localSrc, $filePath, $extension
+            return FontVariantsDTO::fromAPI(
+                $variant['id'],
+                $variant['fontFamily'],
+                $variant['fontStyle'],
+                $variant['fontWeight'],
+                $variant['local'],
+                $url,
+                $localSrc,
+                $filePath,
+                $extension
             );
-        }
-        return $variants;
+        }, $content['variants']);
     }
 
     /**
@@ -121,11 +151,10 @@ class FontService implements FontServiceInterface
      */
     protected function getURLAndExtensionForVariant(array $variant)
     {
-        $fontExtensions = array("woff2", "woff", "ttf");
         $url = '';
         $extension = '';
 
-        foreach ($fontExtensions as $fontExtension) {
+        foreach ($this->fontExtensionsToDownload as $fontExtension) {
             if(!empty($variant[$fontExtension])) {
                 $url = $variant[$fontExtension];
                 $extension = $fontExtension;
