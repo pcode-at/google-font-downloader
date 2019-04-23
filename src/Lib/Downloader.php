@@ -3,8 +3,6 @@
 
 namespace PCode\GoogleFontDownloader\Lib;
 
-
-use PCode\GoogleFontDownloader\Exception\InvalidRequestFormat;
 use PCode\GoogleFontDownloader\Interfaces\APIInterface;
 use PCode\GoogleFontDownloader\Interfaces\DownloaderInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\DownloadServiceInterface;
@@ -54,45 +52,65 @@ class Downloader implements DownloaderInterface
     }
 
     /**
-     * @param array[string] $fonts
-     * @return FontDTO[]
-     * @example download([
-     *   ['name' => 'Open Sans', 'version' => 'v12'],
-     *   ['name' => 'Incosolata', 'version' => 'v13'],
-     * ])
+     * @param string $fontName
+     * @param string $fontVersion
+     * @param string $fontExtension
+     * @return FontDTO
+     * @example download('Open Sans', 'v12', 'woff2')
      */
-    public function download(array $fonts)
+    public function download(
+        string $fontName,
+        string $fontVersion,
+        string $fontExtension = FontExtension::WOFF22
+    ) {
+        return $this->downloadService->downloadFont(
+            $fontName,
+            $this->getFontDTO($fontName, $fontVersion, $fontExtension)
+        );
+    }
+
+    /**
+     * @param string $fontName
+     * @param string $fontExtension
+     * @return FontDTO
+     * @example download('Open Sans', 'woff2')
+     */
+    public function downloadLatest(string $fontName, string $fontExtension = FontExtension::WOFF22)
     {
-        $downloadedFonts = [];
+        return $this->downloadService->downloadFont(
+            $fontName,
+            $this->getFontDTO($fontName, null, $fontExtension)
+        );
+    }
 
-        foreach ($fonts as $font) {
-            if (array_keys($font) !== ['name', 'version']) {
-                throw new InvalidRequestFormat(
-                    "Please use following structure ['name' => 'FontName', 'version' => 'v12']"
-                );
-            }
+    public function checkIfVersionExists(string $fontName, string $version): bool
+    {
+        $apiData = $this->api->getMetadata($fontName);
 
-            $fontDTO = $this->getFontDTO($font['name'], $font['version']);
-            $downloadedFonts[] = $this->downloadService->downloadFont($font['name'], $fontDTO);
-        }
+        $fontDto = $this->fontService->createDTO($apiData);
+        $fontDto->changeVersion($version);
 
-        return $downloadedFonts;
+        return $this->downloadService->isAvailableForDownload($fontDto->getVariants()[0]);
     }
 
     /**
      * @param $font
      * @param string $version
+     * @param string $fontExtension
      * @return FontDTO
      */
-    public function getFontDTO($font, string $version = null)
+    public function getFontDTO($font, string $version = null, string $fontExtension = FontExtension::WOFF22)
     {
         $apiData = $this->api->getMetadata($font);
 
+        $fontDto = $this->fontService->createDTO($apiData, [
+            'extension' => $fontExtension,
+        ]);
+
         if ($version) {
-            $apiData['latest_version'] = $apiData['version'];
-            $apiData['version'] = $version;
+            $fontDto->changeVersion($version);
         }
 
-        return $this->fontService->createDTO($apiData);
+        return $fontDto;
     }
 }

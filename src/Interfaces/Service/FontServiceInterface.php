@@ -10,9 +10,10 @@ interface FontServiceInterface
 {
     /**
      * @param $content
+     * @param array $options
      * @return FontDTO
      */
-    public function createDTO($content);
+    public function createDTO($content, $options = []);
 
     /**
      * @param Response $response

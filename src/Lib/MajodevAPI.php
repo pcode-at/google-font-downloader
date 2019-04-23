@@ -51,13 +51,13 @@ final class MajodevAPI implements APIInterface
      * @param null|string $font
      * @return mixed
      */
-    public function getMetadata(?string $font)
+    public function getMetadata(string $font)
     {
-
         /** @var UriInterface $url */
         $url = $this->apiUrl->withScheme('https')
                             ->withHost(MajodevAPI::API_URL)
                             ->withPath(MajodevAPI::API_PATH . $this->normalizeName($font));
+
         $metadata = $this->fontService->getContent($this->downloadService->sendRequest($url->__toString(), 'GET'));
 
         // Add subsets to the url

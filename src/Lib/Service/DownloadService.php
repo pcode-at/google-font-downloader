@@ -5,6 +5,7 @@ namespace PCode\GoogleFontDownloader\Lib\Service;
 
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
 use PCode\GoogleFontDownloader\Interfaces\Service\DownloadServiceInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\FileServiceInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\FontServiceInterface;
@@ -90,5 +91,21 @@ class DownloadService implements DownloadServiceInterface
         $fileResponse = $this->sendRequest($variant->getUrl(), 'GET');
         $fileContent = $this->fontService->getContent($fileResponse, false);
         $this->fileService->write($variant->getPath(), $fileContent);
+    }
+
+    /**
+     * @param FontVariantsDTO $variant
+     * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function isAvailableForDownload(FontVariantsDTO $variant): bool
+    {
+        try {
+            $this->sendRequest($variant->getUrl(), 'GET');
+            return true;
+        } catch (ClientException $e) {
+            return false;
+        }
+
     }
 }

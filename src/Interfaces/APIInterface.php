@@ -16,7 +16,7 @@ interface APIInterface
     public function getMetadata(string $url);
 
     /**
-     * @param null|string $name
+     * @param string|null $name
      * @return mixed
      */
     public function normalizeName(?string $name);
