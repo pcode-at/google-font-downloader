@@ -18,14 +18,17 @@ class Downloader implements DownloaderInterface
      * @var DownloadServiceInterface
      */
     private $downloadService;
+
     /**
      * @var FontServiceInterface
      */
     private $fontService;
+
     /**
      * @var FileServiceInterface
      */
     private $fileService;
+
     /**
      * @var APIInterface
      */
@@ -81,12 +84,14 @@ class Downloader implements DownloaderInterface
      * @param string $version
      * @return FontDTO
      */
-    public function getFontDTO($font, string $version)
+    public function getFontDTO($font, string $version = null)
     {
         $apiData = $this->api->getMetadata($font);
 
-        $apiData['latest_version'] = $apiData['version'];
-        $apiData['version'] = $version;
+        if ($version) {
+            $apiData['latest_version'] = $apiData['version'];
+            $apiData['version'] = $version;
+        }
 
         return $this->fontService->createDTO($apiData);
     }
