@@ -20,8 +20,7 @@
         "php": ">=7.1",
 		"phpunit/phpunit": "^7.0",
         "oneup/flysystem-bundle": "2.0.1",
-        "php-http/guzzle6-adapter": "^1.1",
-        "symfony/var-dumper": "^4.2"
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "autoload": {
         "psr-4": { "PCode\\GoogleFontDownloader\\": "src/" }
