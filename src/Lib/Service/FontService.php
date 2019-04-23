@@ -149,7 +149,8 @@ class FontService implements FontServiceInterface
      * @return string
      * @throws UnsupportedExtension
      */
-    protected function getDownloadUrlForVariantExtension(array $variant, string $extension): string {
+    protected function getDownloadUrlForVariantExtension(array $variant, string $extension): string
+    {
         if(!isset($variant[$extension])) {
             throw new UnsupportedExtension(
                 "Font extension {$extension} is not available for ${$variant['fontFamily']}"
