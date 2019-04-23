@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pcode\GoogleFontDownloader;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Uri;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;

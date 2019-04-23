@@ -1,8 +1,6 @@
 <?php
 
-
 namespace PCode\GoogleFontDownloader\Lib\Service;
-
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
@@ -70,14 +68,14 @@ class DownloadService implements DownloadServiceInterface
     }
 
     /**
-     * @param null|string $font
      * @param FontDTO $fontDTO
      * @return FontDTO
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function downloadFont(?string $font, FontDTO $fontDTO)
+    public function downloadFont(FontDTO $fontDTO)
     {
         $this->handleFontResponse($fontDTO);
+
         return $fontDTO;
     }
 

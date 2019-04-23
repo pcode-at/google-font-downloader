@@ -64,7 +64,6 @@ class Downloader implements DownloaderInterface
         string $fontExtension = FontExtension::WOFF22
     ) {
         return $this->downloadService->downloadFont(
-            $fontName,
             $this->getFontDTO($fontName, $fontVersion, $fontExtension)
         );
     }
@@ -78,17 +77,23 @@ class Downloader implements DownloaderInterface
     public function downloadLatest(string $fontName, string $fontExtension = FontExtension::WOFF22)
     {
         return $this->downloadService->downloadFont(
-            $fontName,
             $this->getFontDTO($fontName, null, $fontExtension)
         );
     }
 
-    public function checkIfVersionExists(string $fontName, string $version): bool
+    /**
+     * @param string $fontName
+     * @param string $version
+     * @return bool
+     */
+    public function isFontAvailableForDownload(string $fontName, string $version = null): bool
     {
         $apiData = $this->api->getMetadata($fontName);
-
         $fontDto = $this->fontService->createDTO($apiData);
-        $fontDto->changeVersion($version);
+
+        if ($version) {
+            $fontDto->changeVersion($version);
+        }
 
         return $this->downloadService->isAvailableForDownload($fontDto->getVariants()[0]);
     }
