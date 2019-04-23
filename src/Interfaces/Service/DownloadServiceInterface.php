@@ -40,5 +40,5 @@ interface DownloadServiceInterface
      * @param FontVariantsDTO $variant
      * @return mixed
      */
-    public function isAvailableForDownload(FontVariantsDTO $variant);
+    public function isAvailableForDownload(FontVariantsDTO $variant): bool;
 }

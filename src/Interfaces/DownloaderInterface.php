@@ -13,25 +13,31 @@ interface DownloaderInterface
 {
     /**
      * @param string $fontName
-     * @param string|null $fontVersion
-     * @param string|null $fontExtension
-     * @return FontDTO[]
-     * @example download('Open Sans', 'v12', 'woff2')
+     * @param string $fontVersion
+     * @param string $fontExtension
+     * @return FontDTO
      */
-    public function download(string $fontName, string $fontVersion, string $fontExtension = FontExtension::WOFF22);
+    public function download(string $fontName, string $fontVersion, string $fontExtension = FontExtension::DEFAULT): FontDTO;
 
     /**
      * @param string $fontName
-     * @param string|null $fontExtension
-     * @return FontDTO[]
-     * @example download('Open Sans', 'woff2')
-     */
-    public function downloadLatest(string $fontName, string $fontExtension = FontExtension::WOFF22);
-
-    /**
-     * @param $font
-     * @param string|null $version
+     * @param string $fontExtension
      * @return FontDTO
      */
-    public function getFontDTO($font, string $version);
+    public function downloadLatest(string $fontName, string $fontExtension = FontExtension::DEFAULT): FontDTO;
+
+    /**
+     * @param string $font
+     * @param string $version
+     * @return FontDTO
+     */
+    public function getFontDTO(string $font, string $version): FontDTO;
+
+    /**
+     * Checks if font with specific version is available for download
+     * @param string $fontName
+     * @param string|null $version
+     * @return bool
+     */
+    public function isFontAvailableForDownload(string $fontName, string $version = null): bool;
 }

@@ -9,4 +9,5 @@ class FontExtension
     public const WOFF22 = 'woff2';
     public const WOFF = 'woff';
     public const TTF = 'ttf';
+    public const DEFAULT = self::WOFF22;
 }

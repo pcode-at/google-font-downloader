@@ -62,7 +62,7 @@ class Downloader implements DownloaderInterface
         string $fontName,
         string $fontVersion,
         string $fontExtension = FontExtension::WOFF22
-    ) {
+    ): FontDTO {
         return $this->downloadService->downloadFont(
             $this->getFontDTO($fontName, $fontVersion, $fontExtension)
         );
@@ -74,7 +74,7 @@ class Downloader implements DownloaderInterface
      * @return FontDTO
      * @example download('Open Sans', 'woff2')
      */
-    public function downloadLatest(string $fontName, string $fontExtension = FontExtension::WOFF22)
+    public function downloadLatest(string $fontName, string $fontExtension = FontExtension::DEFAULT): FontDTO
     {
         return $this->downloadService->downloadFont(
             $this->getFontDTO($fontName, null, $fontExtension)
@@ -99,15 +99,14 @@ class Downloader implements DownloaderInterface
     }
 
     /**
-     * @param $font
-     * @param string $version
+     * @param string $font
+     * @param string|null $version
      * @param string $fontExtension
      * @return FontDTO
      */
-    public function getFontDTO($font, string $version = null, string $fontExtension = FontExtension::WOFF22)
+    public function getFontDTO(string $font, string $version = null, string $fontExtension = FontExtension::DEFAULT): FontDTO
     {
         $apiData = $this->api->getMetadata($font);
-
         $fontDto = $this->fontService->createDTO($apiData, [
             'extension' => $fontExtension,
         ]);

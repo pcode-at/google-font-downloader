@@ -104,6 +104,5 @@ class DownloadService implements DownloadServiceInterface
         } catch (ClientException $e) {
             return false;
         }
-
     }
 }

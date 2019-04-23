@@ -86,8 +86,7 @@ class FontService implements FontServiceInterface
     protected function createVariants($content, $options = [])
     {
         return array_map(function ($variant) use ($content, $options) {
-
-            $extension = isset($options['extension']) ? $options['extension'] : FontExtension::WOFF22;
+            $extension = isset($options['extension']) ? $options['extension'] : FontExtension::DEFAULT;
 
             $url = $this->getDownloadUrlForVariantExtension(
                 $variant,
