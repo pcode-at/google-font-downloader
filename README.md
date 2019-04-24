@@ -2,40 +2,42 @@
 
 ## Description
 
-This package will download all fonts that is inside the array $fonts
+This package will download specified font from self hosted google fonts repository.    
 
-    Array example: ['Arimo', 'Open Sans']
-    
-and will place it depends on the provided services in the constructor of the package class.
+### Basic usage
 
-## Available APIs
+```PHP
+$client = new GuzzleHttp\Client;
+$filesystemAdapter = new League\Flysystem\Adapter\Local('web/fonts');
+$filesystem = new League\Flysystem\Filesystem($filesystemAdapter);
 
-- https://google-webfonts-helper.herokuapp.com
-    
-## Available methods
+$fileService = new FileService($filesystem);
+$fontService = new FontService($fileService, 'fonts/');
+$downloadService = new DownloadService($client, $fileService, $fontService);
+$uri = new Uri();
+$api = new MajodevAPI($fontService, $downloadService, $uri);
 
-    # example: download(['Arimo', 'Open Sans']);
-    download (array $fonts)
-    
-    # example: getFontDTO('Arimo');
-    getFontDTO (string $fontName)
+$downloader = new Downloader($fileService, $fontService, $downloadService, $api);
+```   
 
-## Third-party libraries
+### Then use it like
+```PHP
+//Download specific version of font
+$downloadedFont = $downloader->download("Open Sans", "v12");
 
-    GuzzleHttp
-    League
-    PHPUnit
-    
-## Constraints
+//Download font latest version
+$downloadedFont = $downloader->downloadLatest("Open Sans");
 
-- Code is written in php 7.1
+//You can also provide font extension, use constan from PCode\GoogleFontDownloader\Lib\FontExtension class
+//Default font extension is WOFF"
+$downloadedFont = $downloader->downloadLatest("Open Sans", FontExtension::WOFF22);
 
-## Recommended dependencies
+//Check if font can be downloaded
+$downloader->isFontAvailableForDownload("Raleway");
 
- - GuzzleHttp
- - League\Flysystem
-    
-## Usage example
+//Check if with specific version is avalible for download
+$downloader->isFontAvailableForDownload("Raleway", "v12");
+```
 
 ### Symfony usage
 
@@ -130,40 +132,33 @@ sity.downloader.export:
         - '@sity.downloader.export_download'
         - '@sity.downloader.export_majodev_api'
         
-        
-## In the constructor
+## Use service by injecting it in the constructor
 
 public function __construct(DownloaderInterface $downloadFonts , [...])
 {
     $this->downloadFonts = $downloadFonts;
     ...        
 }
-
-# Then use it like
-
-$downloadedFonts = $this->downloadFonts->download([
-    ['name' => Arimo, 'version' => 'v14'], 
-    ['name => Open Sans', 'version => 'v13]'
-]);
-
 ```
 
-### Basic usage
+## Available APIs
+- https://google-webfonts-helper.herokuapp.com
+    
+## Third-party libraries
 
-```PHP
-$client = new GuzzleHttp\Client;
-$filesystemAdapter = new League\Flysystem\Adapter\Local('web/fonts');
-$filesystem = new League\Flysystem\Filesystem($filesystemAdapter);
+    GuzzleHttp
+    League
+    PHPUnit
+    
+## Constraints
 
-$fileService = new FileService($filesystem);
-$fontService = new FontService($fileService, 'fonts/');
-$downloadService = new DownloadService($client, $fileService, $fontService);
-$uri = new Uri();
-$api = new MajodevAPI($fontService, $downloadService, $uri);
+- Code is written in php 7.1
 
-$downloader = new Downloader($fileService, $fontService, $downloadService, $api);
-```   
+## Recommended dependencies
 
+ - GuzzleHttp
+ - League\Flysystem
+         
 ## Useful git commands
 
     # Clean repo
