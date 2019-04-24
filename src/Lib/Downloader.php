@@ -3,7 +3,6 @@
 
 namespace PCode\GoogleFontDownloader\Lib;
 
-
 use PCode\GoogleFontDownloader\Interfaces\APIInterface;
 use PCode\GoogleFontDownloader\Interfaces\DownloaderInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\DownloadServiceInterface;
@@ -17,14 +16,17 @@ class Downloader implements DownloaderInterface
      * @var DownloadServiceInterface
      */
     private $downloadService;
+
     /**
      * @var FontServiceInterface
      */
     private $fontService;
+
     /**
      * @var FileServiceInterface
      */
     private $fileService;
+
     /**
      * @var APIInterface
      */
@@ -37,8 +39,12 @@ class Downloader implements DownloaderInterface
      * @param DownloadServiceInterface $downloadService
      * @param APIInterface $api
      */
-    public function __construct(FileServiceInterface $fileService, FontServiceInterface $fontService, DownloadServiceInterface $downloadService, APIInterface $api)
-    {
+    public function __construct(
+        FileServiceInterface $fileService,
+        FontServiceInterface $fontService,
+        DownloadServiceInterface $downloadService,
+        APIInterface $api
+    ) {
         $this->fileService = $fileService;
         $this->fontService = $fontService;
         $this->downloadService = $downloadService;
@@ -46,26 +52,69 @@ class Downloader implements DownloaderInterface
     }
 
     /**
-     * @param array[string] $fonts
-     * @return FontDTO[]
-     * @example download(['Arimo', 'Open Sans'])
+     * @param string $fontName
+     * @param string $fontVersion
+     * @param string $fontExtension
+     * @return FontDTO
+     * @example download('Open Sans', 'v12', 'woff2')
      */
-    public function download(array $fonts)
-    {
-        $downloadFont = function ($font) {
-            $fontDTO = $this->getFontDTO($font);
-            return $this->downloadService->downloadFont($font, $fontDTO);
-        };
-        return array_map($downloadFont, $fonts);
+    public function download(
+        string $fontName,
+        string $fontVersion,
+        string $fontExtension = FontExtension::WOFF22
+    ): FontDTO {
+        return $this->downloadService->downloadFont(
+            $this->getFontDTO($fontName, $fontVersion, $fontExtension)
+        );
     }
 
     /**
-     * @param $font
+     * @param string $fontName
+     * @param string $fontExtension
+     * @return FontDTO
+     * @example download('Open Sans', 'woff2')
+     */
+    public function downloadLatest(string $fontName, string $fontExtension = FontExtension::DEFAULT): FontDTO
+    {
+        return $this->downloadService->downloadFont(
+            $this->getFontDTO($fontName, null, $fontExtension)
+        );
+    }
+
+    /**
+     * @param string $fontName
+     * @param string $version
+     * @return bool
+     */
+    public function isFontAvailableForDownload(string $fontName, string $version = null): bool
+    {
+        $apiData = $this->api->getMetadata($fontName);
+        $fontDto = $this->fontService->createDTO($apiData);
+
+        if ($version) {
+            $fontDto->changeVersion($version);
+        }
+
+        return $this->downloadService->isAvailableForDownload($fontDto->getVariants()[0]);
+    }
+
+    /**
+     * @param string $font
+     * @param string|null $version
+     * @param string $fontExtension
      * @return FontDTO
      */
-    public function getFontDTO($font)
+    public function getFontDTO(string $font, string $version = null, string $fontExtension = FontExtension::DEFAULT): FontDTO
     {
-        $APIData = $this->api->getMetadata($font);
-        return $this->fontService->createDTO($APIData);
+        $apiData = $this->api->getMetadata($font);
+        $fontDto = $this->fontService->createDTO($apiData, [
+            'extension' => $fontExtension,
+        ]);
+
+        if ($version) {
+            $fontDto->changeVersion($version);
+        }
+
+        return $fontDto;
     }
 }

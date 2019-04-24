@@ -1,10 +1,9 @@
 <?php
 
-
 namespace PCode\GoogleFontDownloader\Lib\Service;
 
-
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
 use PCode\GoogleFontDownloader\Interfaces\Service\DownloadServiceInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\FileServiceInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\FontServiceInterface;
@@ -17,10 +16,12 @@ class DownloadService implements DownloadServiceInterface
      * @var ClientInterface
      */
     private $client;
+
     /**
      * @var FileServiceInterface
      */
     private $fileService;
+
     /**
      * @var FontServiceInterface
      */
@@ -32,8 +33,11 @@ class DownloadService implements DownloadServiceInterface
      * @param FileServiceInterface $fileService
      * @param FontServiceInterface $fontService
      */
-    public function __construct(ClientInterface $client, FileServiceInterface $fileService, FontServiceInterface $fontService)
-    {
+    public function __construct(
+        ClientInterface $client,
+        FileServiceInterface $fileService,
+        FontServiceInterface $fontService
+    ) {
         $this->client = $client;
         $this->fileService = $fileService;
         $this->fontService = $fontService;
@@ -64,14 +68,14 @@ class DownloadService implements DownloadServiceInterface
     }
 
     /**
-     * @param null|string $font
      * @param FontDTO $fontDTO
      * @return FontDTO
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function downloadFont(?string $font, FontDTO $fontDTO)
+    public function downloadFont(FontDTO $fontDTO)
     {
         $this->handleFontResponse($fontDTO);
+
         return $fontDTO;
     }
 
@@ -85,5 +89,20 @@ class DownloadService implements DownloadServiceInterface
         $fileResponse = $this->sendRequest($variant->getUrl(), 'GET');
         $fileContent = $this->fontService->getContent($fileResponse, false);
         $this->fileService->write($variant->getPath(), $fileContent);
+    }
+
+    /**
+     * @param FontVariantsDTO $variant
+     * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function isAvailableForDownload(FontVariantsDTO $variant): bool
+    {
+        try {
+            $this->sendRequest($variant->getUrl(), 'GET');
+            return true;
+        } catch (ClientException $e) {
+            return false;
+        }
     }
 }

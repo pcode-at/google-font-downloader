@@ -2,7 +2,6 @@
 
 namespace PCode\GoogleFontDownloader\Interfaces\Service;
 
-
 use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
 use PCode\GoogleFontDownloader\Lib\Models\FontVariantsDTO;
 
@@ -27,14 +26,19 @@ interface DownloadServiceInterface
     public function handleFontResponse(FontDTO $fontDTO): void;
 
     /**
-     * @param null|string $font
      * @param FontDTO $fontDTO
      * @return FontDTO
      */
-    public function downloadFont(?string $font, FontDTO $fontDTO);
+    public function downloadFont(FontDTO $fontDTO);
 
     /**
      * @param null|FontVariantsDTO $variant
      */
     public function downloadFile(?FontVariantsDTO $variant): void;
+
+    /**
+     * @param FontVariantsDTO $variant
+     * @return mixed
+     */
+    public function isAvailableForDownload(FontVariantsDTO $variant): bool;
 }

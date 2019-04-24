@@ -210,4 +210,16 @@ final class FontDTO
     {
         $this->storeId = $storeId;
     }
+
+    /**
+     * @param string $requestedVersion
+     */
+    public function changeVersion(string $requestedVersion): void
+    {
+        foreach ($this->variants as $variant) {
+            $variant->setUrl(str_replace($this->version, $requestedVersion, $variant->getUrl()));
+            $variant->setPath(str_replace($this->version, $requestedVersion, $variant->getPath()));
+            $variant->setSrc(str_replace($this->version, $requestedVersion, $variant->getSrc()));
+        }
+    }
 }

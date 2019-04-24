@@ -4,8 +4,10 @@ namespace PCode\GoogleFontDownloader\Lib\Service;
 
 
 use GuzzleHttp\Psr7\Response;
+use PCode\GoogleFontDownloader\Exception\UnsupportedExtension;
 use PCode\GoogleFontDownloader\Interfaces\Service\FileServiceInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\FontServiceInterface;
+use PCode\GoogleFontDownloader\Lib\FontExtension;
 use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
 use PCode\GoogleFontDownloader\Lib\Models\FontVariantsDTO;
 
@@ -28,11 +30,11 @@ class FontService implements FontServiceInterface
      * @var string
      */
     private $localSrcDirectory;
+
     /**
      * @var FileServiceInterface
      */
     private $fileService;
-
 
     /**
      * FontService constructor.
@@ -47,12 +49,20 @@ class FontService implements FontServiceInterface
 
     /**
      * @param $content
+     * @param array $options
      * @return FontDTO
      */
-    public function createDTO($content)
+    public function createDTO($content, $options = [])
     {
-        return FontDTO::fromAPI($content['id'], $content['family'], $content['family'], $this->createVariants($content), $content['subsets'], $content['version'],
-            $this->createUnicodeRanges($content), $content['storeID']);
+        return FontDTO::fromAPI(
+            $content['id'],
+            $content['family'],
+            $content['family'],
+            $this->createVariants($content, $options),
+            $content['subsets'],
+            $content['version'],
+            $this->createUnicodeRanges($content), $content['storeID']
+        );
     }
 
     /**
@@ -70,23 +80,41 @@ class FontService implements FontServiceInterface
 
     /**
      * @param $content
+     * @param array $options
      * @return FontVariantsDTO[]
      */
-    protected function createVariants($content)
+    protected function createVariants($content, $options = [])
     {
-        $variants = [];
-        foreach ($content['variants'] as $variant) {
-            $URLAndExtensionForVariant = $this->getURLAndExtensionForVariant($variant);
-            $extension = $URLAndExtensionForVariant['extension'];
-            $url = $URLAndExtensionForVariant['url'];
-            $filePath = $this->fileService->getPath($variant['id'], $extension, $content['family'], $content['version'], $content['storeID']);
+        return array_map(function ($variant) use ($content, $options) {
+            $extension = isset($options['extension']) ? $options['extension'] : FontExtension::DEFAULT;
+
+            $url = $this->getDownloadUrlForVariantExtension(
+                $variant,
+                $extension
+            );
+
+            $filePath = $this->fileService->getPath(
+                $variant['id'],
+                $extension,
+                $content['family'],
+                $content['version'],
+                $content['storeID']
+            );
+
             $localSrc = '/'.$this->localSrcDirectory.$filePath;
 
-            $variants[] = FontVariantsDTO::fromAPI($variant['id'], $variant['fontFamily'], $variant['fontStyle'], $variant['fontWeight'], $variant['local'],
-                $url, $localSrc, $filePath, $extension
+            return FontVariantsDTO::fromAPI(
+                $variant['id'],
+                $variant['fontFamily'],
+                $variant['fontStyle'],
+                $variant['fontWeight'],
+                $variant['local'],
+                $url,
+                $localSrc,
+                $filePath,
+                $extension
             );
-        }
-        return $variants;
+        }, $content['variants']);
     }
 
     /**
@@ -117,22 +145,18 @@ class FontService implements FontServiceInterface
 
     /**
      * @param array $variant
-     * @return array
+     * @param string $extension
+     * @return string
+     * @throws UnsupportedExtension
      */
-    protected function getURLAndExtensionForVariant(array $variant)
+    protected function getDownloadUrlForVariantExtension(array $variant, string $extension): string
     {
-        $fontExtensions = array("woff2", "woff", "ttf");
-        $url = '';
-        $extension = '';
-
-        foreach ($fontExtensions as $fontExtension) {
-            if(!empty($variant[$fontExtension])) {
-                $url = $variant[$fontExtension];
-                $extension = $fontExtension;
-                break;
-            }
+        if(!isset($variant[$extension])) {
+            throw new UnsupportedExtension(
+                "Font extension {$extension} is not available for ${$variant['fontFamily']}"
+            );
         }
 
-        return ['url' => $url, 'extension' => $extension];
+        return $variant[$extension];
     }
 }
