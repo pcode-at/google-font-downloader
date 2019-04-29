@@ -1,4 +1,4 @@
-# Google font downloader
+# Font downloader
 
 ## Description
 
