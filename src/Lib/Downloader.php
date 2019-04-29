@@ -60,7 +60,7 @@ class Downloader implements DownloaderInterface
      */
     public function download(
         string $fontName,
-        string $fontVersion,
+        ?string $fontVersion = null,
         string $fontExtension = FontExtension::WOFF22
     ): FontDTO {
         return $this->downloadService->downloadFont(
