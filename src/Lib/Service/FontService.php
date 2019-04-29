@@ -108,7 +108,7 @@ class FontService implements FontServiceInterface
                 $variant['fontFamily'],
                 $variant['fontStyle'],
                 $variant['fontWeight'],
-                $variant['local'],
+                $variant['local'] ?? null,
                 $url,
                 $localSrc,
                 $filePath,
