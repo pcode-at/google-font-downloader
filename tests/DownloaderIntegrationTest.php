@@ -11,6 +11,21 @@ class DownloaderIntegrationTest extends FontDownloaderTestCase
 {
     /**
      * @test
+     */
+    function it_downloads_font_latest_font_if_specific_version_is_not_available()
+    {
+        $downloader = $this->getDownloader();
+
+        /** @var FontDTO $downloadedFont */
+        $downloadedFont = $downloader->download('Average', 'v1');
+
+        $this->assertInstanceOf(FontDTO::class, $downloadedFont);
+
+        $this->assertNotEquals('v1', $downloadedFont->getVersion());
+    }
+
+    /**
+     * @test
      * @dataProvider fontsWithVersionsProvider
      * @param $fontName
      * @param $fontVersion

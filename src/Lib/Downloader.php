@@ -63,6 +63,12 @@ class Downloader implements DownloaderInterface
         ?string $fontVersion = null,
         string $fontExtension = FontExtension::WOFF22
     ): FontDTO {
+        $isFontAvailable = $this->isFontAvailableForDownload($fontName, $fontVersion);
+
+        if (empty($fontVersion) || !$isFontAvailable) {
+            return $this->downloadLatest($fontName, $fontExtension);
+        }
+
         return $this->downloadService->downloadFont(
             $this->getFontDTO($fontName, $fontVersion, $fontExtension)
         );
