@@ -52,10 +52,10 @@ final class FontDTO
      * @param null|FontVariantsDTO[] $variants
      * @param null|string[] $subsets
      * @param null|string $version
-     * @param array|null $unicodeRanges
+     * @param null|array $unicodeRanges
      * @param null|string $storeID
      */
-    private function __construct(?string $id, ?string $name, ?string $family, ?array $variants, ?array $subsets, ?string $version, ?array $unicodeRanges, ?string $storeID)
+    private function __construct($id, $name, $family, $variants, $subsets, $version, $unicodeRanges, $storeID)
     {
         $this->id = $id;
         $this->name = $name;
@@ -68,17 +68,17 @@ final class FontDTO
     }
 
     /**
-     * @param null|string $id
-     * @param null|string $name
-     * @param null|string $family
+     * @param string|null $id
+     * @param string|null $name
+     * @param string|null $family
      * @param array|null $variants
      * @param array|null $subsets
-     * @param null|string $version
+     * @param string|null $version
      * @param array|null $unicodeRanges
-     * @param null|string $storeID
+     * @param string|null $storeID
      * @return FontDTO
      */
-    public static function fromAPI(?string $id, ?string $name, ?string $family, ?array $variants, ?array $subsets, ?string $version, ?array $unicodeRanges, ?string $storeID)
+    public static function fromAPI($id, $name, $family, $variants, $subsets, $version, $unicodeRanges, $storeID)
     {
         return new FontDTO($id, $name, $family, $variants, $subsets, $version, $unicodeRanges, $storeID);
     }
@@ -86,7 +86,7 @@ final class FontDTO
     /**
      * @return null|string
      */
-    public function getId(): ?string
+    public function getId()
     {
         return $this->id;
     }
@@ -94,7 +94,7 @@ final class FontDTO
     /**
      * @param null|string $id
      */
-    public function setId(?string $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -102,15 +102,16 @@ final class FontDTO
     /**
      * @return null|string
      */
-    public function getName(): ?string
+    public function getName()
     {
         return $this->name;
     }
 
     /**
      * @param null|string $name
+     * @return void
      */
-    public function setName(?string $name): void
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -118,15 +119,16 @@ final class FontDTO
     /**
      * @return null|string
      */
-    public function getFamily(): ?string
+    public function getFamily()
     {
         return $this->family;
     }
 
     /**
      * @param null|string $family
+     * @return void
      */
-    public function setFamily(?string $family): void
+    public function setFamily($family)
     {
         $this->family = $family;
     }
@@ -134,15 +136,16 @@ final class FontDTO
     /**
      * @return null|FontVariantsDTO[]
      */
-    public function getVariants(): ?array
+    public function getVariants()
     {
         return $this->variants;
     }
 
     /**
      * @param null|FontVariantsDTO[] $variants
+     * @return void
      */
-    public function setVariants(?array $variants): void
+    public function setVariants($variants)
     {
         $this->variants = $variants;
     }
@@ -150,7 +153,7 @@ final class FontDTO
     /**
      * @return null|string[]
      */
-    public function getSubsets(): ?array
+    public function getSubsets()
     {
         return $this->subsets;
     }
@@ -158,7 +161,7 @@ final class FontDTO
     /**
      * @param null|string[] $subsets
      */
-    public function setSubsets(?array $subsets): void
+    public function setSubsets($subsets)
     {
         $this->subsets = $subsets;
     }
@@ -166,15 +169,16 @@ final class FontDTO
     /**
      * @return null|string
      */
-    public function getVersion(): ?string
+    public function getVersion()
     {
         return $this->version;
     }
 
     /**
      * @param null|string $version
+     * @return void
      */
-    public function setVersion(?string $version): void
+    public function setVersion($version)
     {
         $this->version = $version;
     }
@@ -182,15 +186,16 @@ final class FontDTO
     /**
      * @return array|null
      */
-    public function getUnicodeRanges(): ?array
+    public function getUnicodeRanges()
     {
         return $this->unicodeRanges;
     }
 
     /**
      * @param array|null $unicodeRanges
+     * @return void
      */
-    public function setUnicodeRanges(?array $unicodeRanges): void
+    public function setUnicodeRanges($unicodeRanges)
     {
         $this->unicodeRanges = $unicodeRanges;
     }
@@ -198,7 +203,7 @@ final class FontDTO
     /**
      * @return null|string
      */
-    public function getStoreId(): ?string
+    public function getStoreId()
     {
         return $this->storeId;
     }
@@ -206,15 +211,16 @@ final class FontDTO
     /**
      * @param null|string $storeId
      */
-    public function setStoreId(?string $storeId): void
+    public function setStoreId($storeId)
     {
         $this->storeId = $storeId;
     }
 
     /**
      * @param string $requestedVersion
+     * @return void
      */
-    public function changeVersion(string $requestedVersion): void
+    public function changeVersion($requestedVersion)
     {
         foreach ($this->variants as $variant) {
             $variant->setUrl(str_replace($this->version, $requestedVersion, $variant->getUrl()));

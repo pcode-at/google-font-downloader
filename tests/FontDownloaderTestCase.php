@@ -1,11 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Pcode\GoogleFontDownloader;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Uri;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
@@ -18,11 +15,14 @@ use PHPUnit\Framework\TestCase;
 
 class FontDownloaderTestCase extends TestCase
 {
-    protected const DATA_DIRECTORY = './tests/data/';
+    const DATA_DIRECTORY = './tests/data/';
 
-    protected const FONTS_DIR = 'fonts/';
+    const FONTS_DIR = 'fonts/';
 
-    public function getDownloader(): Downloader
+    /**
+     * @return Downloader
+     */
+    public function getDownloader() 
     {
         $filesystemAdapter = new Local(self::DATA_DIRECTORY.self::FONTS_DIR);
         $filesystem = new Filesystem($filesystemAdapter);

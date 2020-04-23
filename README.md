@@ -146,27 +146,13 @@ public function __construct(DownloaderInterface $downloadFonts , [...])
     
 ## Third-party libraries
 
-    GuzzleHttp
-    League
-    PHPUnit
+ - GuzzleHttp
+ - League\Flysystem
     
 ## Constraints
 
-- Code is written in php 7.1
+- Code is written in php 5.6
 
-## Recommended dependencies
-
- - GuzzleHttp
- - League\Flysystem
-         
-## Useful git commands
-
-    # Clean repo
-    git clean -xfd
-    
-## Contributing
-
-Use **dev-env** branch
 
 ## Licence
 

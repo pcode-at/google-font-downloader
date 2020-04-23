@@ -1,8 +1,6 @@
 <?php
 
-
 namespace PCode\GoogleFontDownloader\Lib\Service;
-
 
 use League\Flysystem\FilesystemInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\FileServiceInterface;
@@ -27,7 +25,7 @@ class FileService implements FileServiceInterface
      * @param string $path
      * @param $content
      */
-    public function write(string $path, $content)
+    public function write($path, $content)
     {
         if (!$this->filesystem->has($path)) {
             $this->filesystem->put($path, $content);
@@ -40,9 +38,10 @@ class FileService implements FileServiceInterface
      * @param string $family
      * @param string $version
      * @param string $storeID
-     * @return mixed|string
+     * 
+     * @return string
      */
-    public function getPath(string $id, string $extension, string $family, string $version, string $storeID)
+    public function getPath($id, $extension, $family, $version, $storeID)
     {
         return $family.'/'.$family.'-'.$version.'-'.$storeID.'-'.$id.'.'.$extension;
     }

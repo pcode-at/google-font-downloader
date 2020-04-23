@@ -4,3 +4,4 @@ web
 docker
 .phpunit.xml
 tests/data/*
+composer.lock

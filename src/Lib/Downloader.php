@@ -1,6 +1,5 @@
 <?php
 
-
 namespace PCode\GoogleFontDownloader\Lib;
 
 use PCode\GoogleFontDownloader\Interfaces\APIInterface;
@@ -53,16 +52,13 @@ class Downloader implements DownloaderInterface
 
     /**
      * @param string $fontName
-     * @param string $fontVersion
+     * @param null|string $fontVersion
      * @param string $fontExtension
      * @return FontDTO
      * @example download('Open Sans', 'v12', 'woff2')
      */
-    public function download(
-        string $fontName,
-        ?string $fontVersion = null,
-        string $fontExtension = FontExtension::WOFF22
-    ): FontDTO {
+    public function download($fontName, $fontVersion = null, $fontExtension = FontExtension::WOFF22)
+    {
         $isFontAvailable = $this->isFontAvailableForDownload($fontName, $fontVersion);
 
         if (empty($fontVersion) || !$isFontAvailable) {
@@ -80,7 +76,7 @@ class Downloader implements DownloaderInterface
      * @return FontDTO
      * @example download('Open Sans', 'woff2')
      */
-    public function downloadLatest(string $fontName, string $fontExtension = FontExtension::DEFAULT): FontDTO
+    public function downloadLatest($fontName, $fontExtension = FontExtension::DEFAULT_EXTENSION)
     {
         return $this->downloadService->downloadFont(
             $this->getFontDTO($fontName, null, $fontExtension)
@@ -92,7 +88,7 @@ class Downloader implements DownloaderInterface
      * @param string $version
      * @return bool
      */
-    public function isFontAvailableForDownload(string $fontName, string $version = null): bool
+    public function isFontAvailableForDownload($fontName, $version = null)
     {
         $apiData = $this->api->getMetadata($fontName);
         $fontDto = $this->fontService->createDTO($apiData);
@@ -110,7 +106,7 @@ class Downloader implements DownloaderInterface
      * @param string $fontExtension
      * @return FontDTO
      */
-    public function getFontDTO(string $font, string $version = null, string $fontExtension = FontExtension::DEFAULT): FontDTO
+    public function getFontDTO($font, $version = null, $fontExtension = FontExtension::DEFAULT_EXTENSION)
     {
         $apiData = $this->api->getMetadata($font);
         $fontDto = $this->fontService->createDTO($apiData, [

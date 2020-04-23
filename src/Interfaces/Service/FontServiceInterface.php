@@ -2,7 +2,6 @@
 
 namespace PCode\GoogleFontDownloader\Interfaces\Service;
 
-
 use GuzzleHttp\Psr7\Response;
 use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
 
@@ -20,5 +19,5 @@ interface FontServiceInterface
      * @param bool $inJSONFormat
      * @return mixed
      */
-    public function getContent(Response $response, bool $inJSONFormat = true);
+    public function getContent(Response $response, $inJSONFormat = true);
 }

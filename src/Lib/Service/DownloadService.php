@@ -50,7 +50,7 @@ class DownloadService implements DownloadServiceInterface
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function sendRequest(string $url, string $method, $options = ['verify' => false])
+    public function sendRequest($url, $method, $options = ['verify' => false])
     {
         return $this->client->request($method, $url, $options);
     }
@@ -60,7 +60,7 @@ class DownloadService implements DownloadServiceInterface
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function handleFontResponse(FontDTO $fontDTO): void
+    public function handleFontResponse(FontDTO $fontDTO)
     {
         foreach ($fontDTO->getVariants() as $variant) {
             $this->downloadFile($variant);
@@ -84,7 +84,7 @@ class DownloadService implements DownloadServiceInterface
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function downloadFile(?FontVariantsDTO $variant): void
+    public function downloadFile($variant)
     {
         $fileResponse = $this->sendRequest($variant->getUrl(), 'GET');
         $fileContent = $this->fontService->getContent($fileResponse, false);
@@ -96,7 +96,7 @@ class DownloadService implements DownloadServiceInterface
      * @return bool
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function isAvailableForDownload(FontVariantsDTO $variant): bool
+    public function isAvailableForDownload(FontVariantsDTO $variant)
     {
         try {
             $this->sendRequest($variant->getUrl(), 'GET');

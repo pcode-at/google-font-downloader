@@ -2,11 +2,6 @@
 
 namespace PCode\GoogleFontDownloader\Interfaces\Service;
 
-
-/**
- * Interface FileServiceInterface
- * @package PCode\GoogleFontDownloader\Interfaces\Service
- */
 interface FileServiceInterface
 {
     /**
@@ -14,7 +9,7 @@ interface FileServiceInterface
      * @param $content
      * @return mixed
      */
-    public function write(string $path, $content);
+    public function write($path, $content);
 
     /**
      * @param string $id
@@ -24,5 +19,5 @@ interface FileServiceInterface
      * @param string $storeID
      * @return mixed
      */
-    public function getPath(string $id, string $extension, string $family, string $version, string $storeID);
+    public function getPath($id, $extension, $family, $version, $storeID);
 }
