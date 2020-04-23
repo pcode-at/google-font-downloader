@@ -2,7 +2,6 @@
 
 namespace PCode\GoogleFontDownloader\Lib\Models;
 
-
 final class FontVariantsDTO
 {
     /**
@@ -63,15 +62,15 @@ final class FontVariantsDTO
      * @param null|string $extension
      */
     private function __construct(
-        ?string $id,
-        ?string $fontFamily,
-        ?string $fontStyle,
-        ?string $fontWeight,
-        ?array $local,
-        ?string $url,
-        ?string $src,
-        ?string $path,
-        ?string $extension
+        $id,
+        $fontFamily,
+        $fontStyle,
+        $fontWeight,
+        $local,
+        $url,
+        $src,
+        $path,
+        $extension
     ) {
         $this->id = $id;
         $this->fontFamily = $fontFamily;
@@ -85,32 +84,32 @@ final class FontVariantsDTO
     }
 
     public static function fromAPI(
-        ?string $id,
-        ?string $fontFamily,
-        ?string $fontStyle,
-        ?string $fontWeight,
-        ?array $local,
-        ?string $url,
-        ?string $src,
-        ?string $path,
-        ?string $extension
-    )
-    {
+        $id,
+        $fontFamily,
+        $fontStyle,
+        $fontWeight,
+        $local,
+        $url,
+        $src,
+        $path,
+        $extension
+    ) {
         return new FontVariantsDTO($id, $fontFamily, $fontStyle, $fontWeight, $local, $url, $src, $path, $extension);
     }
 
     /**
      * @return null|string
      */
-    public function getId(): ?string
+    public function getId()
     {
         return $this->id;
     }
 
     /**
      * @param null|string $id
+     * @return void
      */
-    public function setId(?string $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -118,15 +117,16 @@ final class FontVariantsDTO
     /**
      * @return null|string
      */
-    public function getFontFamily(): ?string
+    public function getFontFamily()
     {
         return $this->fontFamily;
     }
 
     /**
      * @param null|string $fontFamily
+     * @return void
      */
-    public function setFontFamily(?string $fontFamily): void
+    public function setFontFamily($fontFamily)
     {
         $this->fontFamily = $fontFamily;
     }
@@ -134,15 +134,16 @@ final class FontVariantsDTO
     /**
      * @return null|string
      */
-    public function getFontStyle(): ?string
+    public function getFontStyle()
     {
         return $this->fontStyle;
     }
 
     /**
      * @param null|string $fontStyle
+     * @return void
      */
-    public function setFontStyle(?string $fontStyle): void
+    public function setFontStyle($fontStyle)
     {
         $this->fontStyle = $fontStyle;
     }
@@ -150,15 +151,16 @@ final class FontVariantsDTO
     /**
      * @return null|string
      */
-    public function getFontWeight(): ?string
+    public function getFontWeight()
     {
         return $this->fontWeight;
     }
 
     /**
      * @param null|string $fontWeight
+     * @return void
      */
-    public function setFontWeight(?string $fontWeight): void
+    public function setFontWeight($fontWeight)
     {
         $this->fontWeight = $fontWeight;
     }
@@ -166,15 +168,16 @@ final class FontVariantsDTO
     /**
      * @return null|string[]
      */
-    public function getLocal(): ?array
+    public function getLocal()
     {
         return $this->local;
     }
 
     /**
      * @param null|string[] $local
+     * @return void
      */
-    public function setLocal(?array $local): void
+    public function setLocal($local)
     {
         $this->local = $local;
     }
@@ -182,15 +185,16 @@ final class FontVariantsDTO
     /**
      * @return null|string
      */
-    public function getUrl(): ?string
+    public function getUrl()
     {
         return $this->url;
     }
 
     /**
      * @param null|string $url
+     * @return void
      */
-    public function setUrl(?string $url): void
+    public function setUrl($url)
     {
         $this->url = $url;
     }
@@ -198,15 +202,16 @@ final class FontVariantsDTO
     /**
      * @return null|string
      */
-    public function getSrc(): ?string
+    public function getSrc()
     {
         return $this->src;
     }
 
     /**
      * @param null|string $src
+     * @return void
      */
-    public function setSrc(?string $src): void
+    public function setSrc($src)
     {
         $this->src = $src;
     }
@@ -214,15 +219,16 @@ final class FontVariantsDTO
     /**
      * @return null|string
      */
-    public function getPath(): ?string
+    public function getPath()
     {
         return $this->path;
     }
 
     /**
      * @param null|string $path
+     * @return void
      */
-    public function setPath(?string $path): void
+    public function setPath($path)
     {
         $this->path = $path;
     }
@@ -230,15 +236,16 @@ final class FontVariantsDTO
     /**
      * @return null|string
      */
-    public function getExtension(): ?string
+    public function getExtension()
     {
         return $this->extension;
     }
 
     /**
      * @param null|string $extension
+     * @return void
      */
-    public function setExtension(?string $extension): void
+    public function setExtension($extension)
     {
         $this->extension = $extension;
     }

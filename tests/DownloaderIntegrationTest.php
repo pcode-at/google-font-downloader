@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace PCode\GoogleFontDownloader;
 
 use PCode\GoogleFontDownloader\Lib\FontExtension;
@@ -9,10 +7,8 @@ use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
 
 class DownloaderIntegrationTest extends FontDownloaderTestCase
 {
-    /**
-     * @test
-     */
-    function it_downloads_font_latest_font_if_specific_version_is_not_available()
+    /** @test */
+    function it_downloads_latest_font_if_specific_version_is_not_available()
     {
         $downloader = $this->getDownloader();
 

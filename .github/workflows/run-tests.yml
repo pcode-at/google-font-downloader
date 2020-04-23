@@ -1,0 +1,31 @@
+name: Run tests
+
+on: [push]
+
+jobs:
+    php-tests:
+        runs-on: ${{ matrix.os }}
+        
+        strategy:
+            matrix:
+                php: [7.1, 5.6]
+                os: [ubuntu-latest]
+        
+        name: PHP ${{ matrix.php }} - ${{ matrix.os }}
+        
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v1
+            
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    extension-csv: json fileinfo curl
+                    coverage: none
+            
+            -   name: Install dependencies
+                run: composer install --no-interaction --no-suggest
+            
+            -   name: Execute tests
+                run: composer test

@@ -18,8 +18,8 @@ use Psr\Http\Message\UriInterface;
  */
 final class MajodevAPI implements APIInterface
 {
-    public const API_URL = "google-webfonts-helper.herokuapp.com";
-    public const API_PATH = "api/fonts/";
+    const API_URL = "google-webfonts-helper.herokuapp.com";
+    const API_PATH = "api/fonts/";
 
     /**
      * @var UriInterface
@@ -51,7 +51,7 @@ final class MajodevAPI implements APIInterface
      * @param null|string $font
      * @return mixed
      */
-    public function getMetadata(string $font)
+    public function getMetadata($font)
     {
         /** @var UriInterface $url */
         $url = $this->apiUrl->withScheme('https')
@@ -71,11 +71,12 @@ final class MajodevAPI implements APIInterface
      * @param null|string $name
      * @return null|string
      */
-    public function normalizeName(?string $name)
+    public function normalizeName($name)
     {
         if (!empty($name)) {
             return strtolower(str_replace(' ', '-', $name));
         }
+        
         return $name;
     }
 
