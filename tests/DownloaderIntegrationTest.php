@@ -7,9 +7,7 @@ use PCode\GoogleFontDownloader\Lib\Models\FontDTO;
 
 class DownloaderIntegrationTest extends FontDownloaderTestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     function it_downloads_latest_font_if_specific_version_is_not_available()
     {
         $downloader = $this->getDownloader();
