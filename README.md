@@ -1,5 +1,6 @@
 # Font downloader
 
+![Build status](https://github.com/pcode-at/font-downloader/workflows/Build/badge.svg)
 ## Description
 
 This package will download specified font from self hosted google fonts repository.    
