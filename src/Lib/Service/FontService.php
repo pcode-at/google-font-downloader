@@ -112,6 +112,7 @@ class FontService implements FontServiceInterface
                 $filePath,
                 $extension
             );
+            
         }, $content['variants']);
     }
 

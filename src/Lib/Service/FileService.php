@@ -2,13 +2,14 @@
 
 namespace PCode\GoogleFontDownloader\Lib\Service;
 
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use PCode\GoogleFontDownloader\Interfaces\Service\FileServiceInterface;
 
 class FileService implements FileServiceInterface
 {
     /**
-     * @var FilesystemInterface
+     * @var FilesystemInterface|Filesystem
      */
     private $filesystem;
 
