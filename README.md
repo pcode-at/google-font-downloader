@@ -9,29 +9,20 @@ This package will download specified font from self hosted google fonts reposito
 ### Basic usage
 
 ```PHP
-$client = new GuzzleHttp\Client;
-$filesystemAdapter = new League\Flysystem\Adapter\Local('web/fonts');
-$filesystem = new League\Flysystem\Filesystem($filesystemAdapter);
+use PCode\GoogleFontDownloader\Lib\DownloaderFactory;
+use PCode\GoogleFontDownloader\Lib\FontExtension;
 
-$fileService = new FileService($filesystem);
-$fontService = new FontService($fileService, 'fonts/');
-$downloadService = new DownloadService($client, $fileService, $fontService);
-$uri = new Uri();
-$api = new MajodevAPI($fontService, $downloadService, $uri);
+//Create using factory
+$downloader = DownloaderFactory::create(__DIR__ . '/fonts');
 
-$downloader = new Downloader($fileService, $fontService, $downloadService, $api);
-```   
-
-### Then use it like
-```PHP
 //Download specific version of font
 $downloadedFont = $downloader->download("Open Sans", "v12");
 
 //Download font latest version
 $downloadedFont = $downloader->downloadLatest("Open Sans");
 
-//You can also provide font extension, use constan from PCode\GoogleFontDownloader\Lib\FontExtension class
-//Default font extension is WOFF"
+//You can also provide font extension, use constant from PCode\GoogleFontDownloader\Lib\FontExtension
+//Default font extension is WOFF
 $downloadedFont = $downloader->downloadLatest("Open Sans", FontExtension::WOFF22);
 
 //Check if font can be downloaded
