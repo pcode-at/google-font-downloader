@@ -18,7 +18,7 @@ use Psr\Http\Message\UriInterface;
  */
 final class MajodevAPI implements APIInterface
 {
-    const API_URL = "google-webfonts-helper.herokuapp.com";
+    const API_URL = "n8n-google-fonts-helper.herokuapp.com";
     const API_PATH = "api/fonts/";
 
     /**
@@ -76,7 +76,7 @@ final class MajodevAPI implements APIInterface
         if (!empty($name)) {
             return strtolower(str_replace(' ', '-', $name));
         }
-        
+
         return $name;
     }
 
