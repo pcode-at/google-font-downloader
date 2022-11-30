@@ -14,11 +14,11 @@ use Psr\Http\Message\UriInterface;
  *
  * Github link: https://github.com/majodev/google-webfonts-helper
  *
- * @api https://google-webfonts-helper.herokuapp.com/api/fonts/<ID>/?subsets=<latin>
+ * @api https://gwfh.mranftl.com/api/fonts/<ID>/?subsets=<latin>
  */
 final class MajodevAPI implements APIInterface
 {
-    const API_URL = "google-webfonts-helper.herokuapp.com";
+    const API_URL = "gwfh.mranftl.com";
     const API_PATH = "api/fonts/";
 
     /**
@@ -76,7 +76,7 @@ final class MajodevAPI implements APIInterface
         if (!empty($name)) {
             return strtolower(str_replace(' ', '-', $name));
         }
-        
+
         return $name;
     }
 
